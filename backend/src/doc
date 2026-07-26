@@ -1,0 +1,5 @@
+trong package json:
+main: "..." - file chính
+type: "module - nói với Node.js rằng project dùng ES Modules thay vì CommonJS
+script: { "dev": "...", start: "..."} - npm run dev: chạy server bằng nodemon. Khi bạn sửa code, server tự restart. Dùng khi phát triển.
+npm start: chạy server bằng Node bình thường. Không tự restart khi sửa file. Dùng kiểu chạy ổn định hơn.
