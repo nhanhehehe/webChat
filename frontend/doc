@@ -1,0 +1,12 @@
+npm i react-router axios lucide-react tailwindcss @tailwindcss/vite tailwindcss-animate zustand                zod                     react-hook-form @hookform/resolvers    sonner
+                          [ icon ]     [                 css                         ]  [state] [kiểm tra kiểu dữ liệu khi điền form]    [        làm việc với form    ]    [thông báo]
+
+npm i -D @types/node
+giúp typescript hiểu code của node js                          
+
+boilerplate code: code lặp lai/ mẫu 
+
+state drilling -> zustand(global state) -> trong folder stores - dùng để chứa global state
+
+hàm create gồm 2 param set và get;
++ có thể chứa biến(token, user, ..) và hàm (bất đồng bộ: signUp, signIn, ...) 

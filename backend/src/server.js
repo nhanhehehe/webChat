@@ -1,7 +1,11 @@
 import express from "express";
 import dotenv from "dotenv";
 import { connect } from "./libs/db.js";
-import authRoute from "./routes/authRoute.js"
+import authRoute from "./routes/authRoute.js";
+import cookieParser from "cookie-parser";
+import { protectedRoute } from "./middlewares/authMiddleware.js"
+import userRoute from "./routes/userRoute.js";
+import cors from "cors"
 
 dotenv.config();
 
@@ -10,11 +14,15 @@ const PORT = process.env.PORT || 5001;
 
 //middlewares: express đọc request body từ frontend -> lấy qua req.body
 app.use(express.json());
+app.use(cookieParser());
+app.use(cors({origin: process.env.CLIENT_URL, credentials: true} ))
 
 //public routes
-app.use("/api/auth", authRoute)
+app.use("/api/auth", authRoute);
 
 //private routes 
+app.use(protectedRoute);
+app.use("/api/user", userRoute);
 
 
 connect().then(() => {
