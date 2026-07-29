@@ -5,3 +5,8 @@ script: { "dev": "...", start: "..."} - npm run dev: chạy server bằng nodemo
 npm start: chạy server bằng Node bình thường. Không tự restart khi sửa file. Dùng kiểu chạy ổn định hơn.
 
 sendStatus và status: send thì kh nhận dữ liệu từ .json()
+
+trong phần nghiệp vụ database friend gồm 2 người dùng, nếu khác thứ tự có thể GÂY LỖI
+ví dụ: {nam, nhân} và {nhân, nam} => solution: chuẩn hóa userId nào ngắn lưu trước
+
+trong path những giá trị như trong spring là requestParam là dynamic param trong express -> :requestId
