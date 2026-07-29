@@ -27,7 +27,7 @@ export const useAuthStore = create<authState>((set, get) => ({
       console.error(error);
       toast.error("đăng ký không thành công");
     } finally {
-      set({ loading: true });
+      set({ loading: false });
     }
   },
 
@@ -35,10 +35,13 @@ export const useAuthStore = create<authState>((set, get) => ({
     try {
       set({loading: true});
       // goi api lấy token
-      const token = await authService.signIn(username, password);
-      get().setAccessToken(token);
+      const {accessToken} = await authService.signIn(username, password);
+      set({accessToken})
+      await get().fetchMe();
 
       toast.success("Chào mừng quay trở lại với Moji");
+
+      
       
     } catch (error) {
       console.error(error);
@@ -48,11 +51,11 @@ export const useAuthStore = create<authState>((set, get) => ({
     }
   },
 
-  logOut: async () => {
+  signOut: async () => {
     
     try {
       get().clearState();
-      await authService.logOut();
+      await authService.signOut();
 
       toast.success("logout thành công")
     } catch (error) {
@@ -60,4 +63,48 @@ export const useAuthStore = create<authState>((set, get) => ({
         toast.error("lỗi khi logout. Hãy thử lại");
     }
   },
+
+  fetchMe: async () => {
+    try {
+      set({loading: true});
+      const user = await authService.fetchMe();
+      set({user})
+
+    } catch (error) {
+      console.error(error);
+      set({user: null, accessToken: null});
+      toast.error("lỗi xảy ra khi lấy dữ liệu người dùng. Hãy thử lại!");
+    } finally {
+      set({loading: false});
+    }
+  },
+
+  refreshMe: async () => {
+    try {
+      set({loading: true});
+      const accessToken = await authService.refreshMe();
+
+      set({accessToken});
+
+      if (!get().user) {
+        await get().fetchMe();
+      }
+    } catch (error) {
+      console.error(error);
+      toast.error("token đã hết hạn hoặc không hợp lệ!");
+      get().clearState();
+    } finally {
+      set({loading: false})
+    }
+  },
+
+  teshMe: async() => {
+    try {
+      await authService.testMe();
+      toast.success("test thành công");
+    } catch (error) {
+      console.error(error);
+      toast.error("Lỗi khi test");
+    } 
+  }
 }));

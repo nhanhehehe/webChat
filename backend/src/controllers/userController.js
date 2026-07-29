@@ -14,3 +14,14 @@ export const getMe = async (req, res) => {
         })
     }
 }
+
+export const testMe = async (req, res) => {
+    try {
+        res.sendStatus(204);
+    } catch (error) {
+        console.error("lỗi khi test", error);
+        return res.status(500).json({
+            message: "lỗi hệ thống"
+        })
+    }
+}

@@ -22,5 +22,11 @@ export interface authState {
     password: string,
   ) => Promise<void>;
 
-  logOut: () => Promise<void>;
+  signOut: () => Promise<void>;
+
+  fetchMe: () => Promise<void>;
+
+  refreshMe: () => Promise<void>;
+
+  teshMe: () => Promise<void>;
 }

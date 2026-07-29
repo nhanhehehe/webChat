@@ -27,7 +27,25 @@ export const authService = {
     return response.data;
   },
 
-  logOut: async () => {
-    return api.post("/auth/logout", {}, {withCredentials: true});
+  signOut: async () => {
+    return api.post("/auth/signout", {}, {withCredentials: true});
+  },
+
+  fetchMe: async () => {
+    const response = await api.get("/user/me", {withCredentials: true});
+
+    return response.data.user;
+  },
+
+  refreshMe: async () => {
+    const response = await api.post("auth/refresh", {withCredentials: true});
+
+    return response.data.accessToken;
+  },
+
+  testMe: async () => {
+    const response = await api.get("/user/test", {withCredentials: true});
+
+    return response.data.status;
   }
 };

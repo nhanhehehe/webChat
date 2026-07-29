@@ -10,3 +10,26 @@ state drilling -> zustand(global state) -> trong folder stores - dùng để ch�
 
 hàm create gồm 2 param set và get;
 + có thể chứa biến(token, user, ..) và hàm (bất đồng bộ: signUp, signIn, ...) 
+
+2 cách gắn token frontend: + gắn thủ công vào header của hàm request 
+                           + tạo axios interceptor để tự động gắn accesstoken vào request -> chạy logic trước khi request được gửi đi
+
+
+useAuthStore nói riêng 2 cách để quản lý state khác nhau: + dùng useAuthStore() - sẽ luôn kiểm soát quản lý state thay đổi sẽ cập nhật giá trị
+                                                          + dùng useAuthStore.getState() - sẽ chỉ lấy state đúng 1 lần, state thay đổi vẫn không cập nhật
+
+    thắc mắc tiếp: const {signIn} = useAuthStore(); và const user = useAuthStore(s => s.user)
+
+
+trong react sử dụng rất nhiều spread operator và destructoring
+
+
+khi nào sử dụng ?. 
+
+
+học các phương thức giao tiếp mạng trả về http status gì
+
+await api.post("auth/refresh", {withCredentials: true}); và await api.post("auth/refresh", {}, {withCredentials: true});
+
+
+nghiệp vụ refreshtoken: khi dùng loading để render loading... nhưng loading chỉ true khi chạy api, khi refresh các state rỗng và loading false, do chưa kịp chạy lại service nên khi kiểm tra access token, server thẫy nulll -> trả về lỗi kh đăng nhập thay vì lỗi do expire/reload trang
