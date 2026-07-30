@@ -16,14 +16,12 @@ const friendRequestSchema = new mongoose.Schema({
         maxLength: 300,
     }
 }, {
-}, {
     timestamps: true,
 })
 
-friendRequest.index({"from": 1, "to": 1}, {unique: true});
-
-friendRequest.index({"from": 1});
-friendRequest.index({"to": 1});
+friendRequestSchema.index({from: 1, to: 1}, {unique: true});
+friendRequestSchema.index({from: 1});
+friendRequestSchema.index({to: 1});
 
 const FriendRequest = mongoose.model("FriendRequest", friendRequestSchema);
 

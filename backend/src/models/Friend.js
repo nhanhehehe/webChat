@@ -12,24 +12,22 @@ const friendSchema = new mongoose.Schema({
         required: true,
     }
 }, {
-    timeseries: true,
+    timestamps: true,
 })
 
-friendSchema.pre("save", (next) => {
+friendSchema.pre("save", function()  {
     const a = this.userA.toString();
     const b = this.userB.toString();
 
     if (a>b) {
-        this.userA = new mongoose.Schema.Types.ObjectId(b);
-        this.userB = new mongoose.Schema.Types.ObjectId(a);
+        // tại sao new
+        this.userA = new mongoose.Types.ObjectId(b);
+        this.userB = new mongoose.Types.ObjectId(a);
        
     }
-
-    next();
-
 })
 
-friendSchema.index({"userA": 1, "userB": 1}, {unique: true});
+friendSchema.index({userA: 1, userB: 1}, {unique: true});
 
 const Friend = mongoose.model("Friend", friendSchema);
 

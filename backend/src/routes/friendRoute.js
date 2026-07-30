@@ -10,3 +10,5 @@ router.post("/requests/:requestId/accept", acceptFriendRequest);
 router.post("/requests/:requestId/decline", declineFriendRequest);
 
 router.get("/", getAllFriends);
+
+export default router;

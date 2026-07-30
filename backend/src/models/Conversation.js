@@ -87,7 +87,7 @@ const conversationSchema = new mongoose.Schema({
 
 conversationSchema.index({
     // tạo sao participant mà kh có s
-    "participant.userId": 1, "lastMessageAt":1,
+   "participant.userId": 1, lastMessageAt:1,
 
 })
 

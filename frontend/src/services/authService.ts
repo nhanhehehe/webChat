@@ -4,13 +4,13 @@ export const authService = {
   signUp: async (
     username: string,
     password: string,
-    lastName: string,
     firstName: string,
+    lastName: string,
     email: string,
   ) => {
     const response = await api.post(
       "auth/signup",
-      { username, password, email, firstName, lastName },
+      { username, password, firstName, lastName, email, },
       { withCredentials: true },
     );
 

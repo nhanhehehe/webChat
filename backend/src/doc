@@ -6,7 +6,11 @@ npm start: chạy server bằng Node bình thường. Không tự restart khi s�
 
 sendStatus và status: send thì kh nhận dữ liệu từ .json()
 
+moongose phần pre đã đổi kh cần next trong function
+
 trong phần nghiệp vụ database friend gồm 2 người dùng, nếu khác thứ tự có thể GÂY LỖI
 ví dụ: {nam, nhân} và {nhân, nam} => solution: chuẩn hóa userId nào ngắn lưu trước
 
 trong path những giá trị như trong spring là requestParam là dynamic param trong express -> :requestId
+
+quy tắc trước khi viết logic backend: kiểm tra các trường hợp gây lỗi, kiểm ra các điều kiện -> tránh hacker pháp -> không tin dữ liệu từ frontend
