@@ -23,7 +23,6 @@ friendSchema.pre("save", function()  {
         // tại sao new
         this.userA = new mongoose.Types.ObjectId(b);
         this.userB = new mongoose.Types.ObjectId(a);
-       
     }
 })
 

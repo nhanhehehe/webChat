@@ -15,12 +15,12 @@ export const useAuthStore = create<authState>((set, get) => ({
     set({accessToken: null, user: null, loading: false });
   },
 
-  signUp: async (username, password, firstname, lastname, email) => {
+  signUp: async (username, password, firstName, lastName, email) => {
     try {
       set({ loading: true });
       // gọi api trong lớp service
 
-      await authService.signUp(username, password, email, firstname, lastname);
+      await authService.signUp(username, password, email, firstName, lastName);
 
       toast.success("đăng ký thành công! Bạn đã chuyển sang đăng nhập. ");
     } catch (error) {

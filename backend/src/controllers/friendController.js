@@ -78,7 +78,17 @@ export const sendFriendRequest = async (req, res) => {
 
 export const getFriendRequests = async (req, res) => {
     try {
-        
+        const userId = req.user._id;
+
+        const populateFields = "_id username displayName avatarUrl";
+
+        const [sent, received] = await Promise.all([
+            await FriendRequest.find({from: userId}).populate("to", populateFields).lean(),
+            await FriendRequest.find({to: userId}).populate("from", populateFields).lean()
+        ])
+
+        return res.status(200).json({sent, received}); 
+
     } catch (error) {
         console.log("lỗi khi lấy danh sách yêu cầu kết bạn", error);
         return res.status(500).json({
@@ -171,9 +181,35 @@ export const declineFriendRequest = async (req, res) => {
     }
 }
 
-export const getAllFriends = (req, res) => {
+export const getAllFriends = async (req, res) => {
     try {
-        
+        const userId = req.user._id;
+
+        const friendShips = await Friend.find({
+            $or: [
+                {userA: userId}, {userB: userId},
+            ]
+        })
+        .populate("userA", " displayName avatarUrl _id")
+        .populate("userB", " displayName avatarUrl _id")
+        .lean();
+
+        if (!friendShips.length) {
+            return res.satus(200).json({
+                message: "không có bạn bè",
+            })
+        } 
+
+        const friends = friendShips.map((f) => {
+            return f.userA._id.toString() === userId.toString() ? f.userB : f.userA;
+        })
+
+        return res.status(200).json({
+            message: "lấy danh sách bạn bè thành công",
+            friends,
+        })
+
+
     } catch (error) {
         console.log("lỗi khi lấy danh sách bạn bè", error);
         return res.status(500).json({

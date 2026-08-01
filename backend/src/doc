@@ -14,3 +14,26 @@ ví dụ: {nam, nhân} và {nhân, nam} => solution: chuẩn hóa userId nào ng
 trong path những giá trị như trong spring là requestParam là dynamic param trong express -> :requestId
 
 quy tắc trước khi viết logic backend: kiểm tra các trường hợp gây lỗi, kiểm ra các điều kiện -> tránh hacker pháp -> không tin dữ liệu từ frontend
+
+moongose populate: nhận 2 object as params: + tên bảng, các field không cách -> mặc định mongoose chỉ lấy _id nên phải dùng populate để lấy thêm thông tin
+
+khi nào cần tạo helper: 
+
+middleware: + kiểm tra đã là bạn bè chưa, logic này sử dụng đc nhiều nơi nên tách ở middleware
+
+toán tử nullness "??" kiểm tra vế trái có phải null | undefined không -> lất giá trị bên phải
+
+sendgroupChat chỉ send message khi có conversation
+
+đối với tạo conversation type direct, tìm conversation findOne với type và userId từ participants bằng $all: [userId, participantId]
+
+tại sao khi tạo mới thì conversation group thì unreadCount kh được tạo
+
+await conversation.populate([
+    { path: "participants.userId", select: "displayName avatarUrl" },
+    { path: "seenBy", select: "displayName avatarUrl" },
+    { path: "lastMessage.senderId", select: "displayName avatarUrl" },
+]);
+-> đống này trong create conversation group type có ý nghĩa gì
+
+const notFriend = friends.filter(Boolean); -> tại sao phải Boolean

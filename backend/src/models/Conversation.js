@@ -37,7 +37,7 @@ const lastMessageSchema = new mongoose.Schema({
         type: String,
         default: null,
     },
-    contentId: {
+    senderId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: "User",
     },
