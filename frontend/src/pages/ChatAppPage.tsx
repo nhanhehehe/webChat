@@ -1,6 +1,7 @@
-import SignOut from "@/components/auth/SignOut"
-import { Button } from "@/components/ui/button";
+import { SidebarProvider } from "@/components/ui/sidebar";
+import { AppSidebar } from "@/components/sidebar/app-sidebar";
 import { useAuthStore } from "@/stores/useAuthStore"
+import ChatWindowLayout from "@/components/chat/ChatWindowLayout";
 
 
 const ChatAppPage = () => {
@@ -11,13 +12,13 @@ const ChatAppPage = () => {
   }
 
   return (
-    <div>
-      {user?.username}
-      <SignOut/>
-      <Button onClick={handleTest}>
-        test
-      </Button>
-    </div>
+    <SidebarProvider>
+      <AppSidebar/>
+
+      <div className="flex h-screen w-full p-2">
+        <ChatWindowLayout/>
+      </div>
+    </SidebarProvider>
   )
 }
 

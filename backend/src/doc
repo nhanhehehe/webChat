@@ -37,3 +37,28 @@ await conversation.populate([
 -> đống này trong create conversation group type có ý nghĩa gì
 
 const notFriend = friends.filter(Boolean); -> tại sao phải Boolean
+
+socket io tạo một connection giữa fe và be bằng cách tạo một instance socket ở fe và be, khi kết nối dược socket io sẽ tạo một kết nối tạm thời giữa be và fe và được duy trì một thời gian cho nên có thể gửi dữ liệu qua lại liên tục mà không tạo request mới
+
+socket io dùng cho những sự kiện nhẹ như: gửi tin nhắn, thông báo, ...
+
+socket io có 2 hành động cơ bản: +on: nghe; +emit: gửi
+
+backend trong socket index đã khởi động app rồi nên trong server kh cần khởi động app mà import từ socket về và chạy
+
+vite chỉ cần tạo 2 file env prod và dev vite tự lấy biến
+
+socket fe: socket khởi động tại app.tsx (nơi chạy đầu tiên của ứng dụng), mỗi khi app reload, start app, chuyển route, ... app.tsx luôn chạy đầu tiên
+vì có accessToken từ refreshToken nên khi user quay lại app thì vẫn auto login -> nếu khởi động socket ở login/ ... thì lúc này socket kh được connect đúng thời điểm -> trạng thái onl/off sai -> ảnh hưởng trạng thái onl/off của user
+ 
+tạo middleware cho socket để validate accessToken tránh ai cx có thể connect riel time và chỉ chạy 1 lần
+
+nghiệp vụ online đơn giản: ban đầu tạo danh sách các user online, mỗi khi có ai onl/off sẽ gửi phát tín hiệu cho tất cả các client danh sáh online user mới 
+-> Redis dùng cho phức tạp hơn 
+
+socket send message: mỗi khi user send message backend xử lý xong sẽ gửi tin hiệu đến client để render thông tin message NHƯNG không gửi cho TẤT CẢ clients, vì user3 gửi user4 thì chỉ user4 biết các user khác không được biết
+-> socket io cho phép chia nhóm gọi là không gian ảo, gọi là room, những user nào client nào tham gia phòng đó mới nhận được sự kiện 
+
+nghiệp vụ send message socket io: khi client kết nối được với socket rồi, cần phải đưa họ vào các room tương ứng các cuộc hội thoại mà họ tham gia ->khi đã có room rồi, lúc này send direct message/group message chỉ cần emit sự kiện vào 1 room thay vì toàn bộ clients
+
+nghiệp vụ infinite scroll: sử dụng useRef để lưu một element trong react, cụ thể tạo một thẻ div ở cuối để luộn cuốn xuống dưới nhất (tin nhắn mới nhất)

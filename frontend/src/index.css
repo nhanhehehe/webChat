@@ -210,7 +210,8 @@
   }
 
   body {
-    @apply text-slate-800 dark:text-slate-200;
+    /* để thống nhất giao diện màu trừ khi bị ghi đè */
+    @apply text-slate-800 dark:text-slate-200 bg-background;
   }
 }
 
@@ -278,6 +279,11 @@
 
   .shadow-bubble {
     box-shadow: var(--shadow-bubble);
+  }
+
+  /* Scrollbar */
+  .beautiful-scrollbar {
+    @apply scrollbar-thin scrollbar-thumb-slate-300 scrollbar-track-transparent dark:scrollbar-thumb-slate-600;
   }
 
   /* Animations */

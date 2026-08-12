@@ -33,3 +33,49 @@ await api.post("auth/refresh", {withCredentials: true}); và await api.post("aut
 
 
 nghiệp vụ refreshtoken: khi dùng loading để render loading... nhưng loading chỉ true khi chạy api, khi refresh các state rỗng và loading false, do chưa kịp chạy lại service nên khi kiểm tra access token, server thẫy nulll -> trả về lỗi kh đăng nhập thay vì lỗi do expire/reload trang
+-> cần xem lại nghiệp vụ này 
+
+
+trong video p3: tai cac thu component ui cua shadcn: npx shadcn@latest add switch badge dialog textarea popover 
+
+trong phần sidebar của shadcn, có thể nhấn vào <Sidebar/> ctrl click để xem source bên /ui, xem các chỉ số như SIDEBAR_WIDTH, ...
+
+có thể xem doc để bt cách sài
+
+persist (zustand/middleware): zútand tự đồng bộ giá trị state với local storage, reload trang zustand kiểm tra giá trị của localstorage để check state
+
+khi dùng persist để lấy user từ local storage, cần tính tới trường hợp khi logout hoặc rời app => xóa local storage để không bị dùng lại bởi người khác
+
+23:16 về trước: persist lưu user, theme trong storage nhưng cần phải xóa localStorage khi logout/signin
+
+trong useChatStore chi luu conversation, khong luu MessageChannel, ... -> session chi luu duoc gioi han dung luon; hacker thay conversationId, createdAt, .. khong sao NHUNG thay message thi co van de
+
+-persist trong zustand nhận (set,get) kh được lệch
+
+className={"data-[state=checked]:bg-background/80"} : Data Attribute Variant
+
+convention của direct và group chat giống nhau nên tạo thành 1 ChatCard để cả group và direct chat sử dụng 
+
+ban đầu trong phần useChatStore, cả conversations và messages đều dùng chung loading, nhưng khác conversation messages luôn fetch api (cuộn trang để đọc tin nhắn cũ), dẫn đến sidebar(chứa conversation trong sidebar) sẽ bị chập chờn. vì vậy cần tạo thêm một loading cho messsages
+
+giải thích sidebarinset(layout khung chat (phần header)): +header: nơi bắt đầu chat header(parent element); +Sidebartrigger: nút icon đóng mở sidebar; +seperator: thanh nhỏ chia cắt (giống border); + BreadCumb: giống như các đường path chỉ dẫn đang ở thư mục nào 
+
+nhờ lưu lại chat trên localstorage do persist, một khi các cuộc trò chuyện đc nhấn vào và đã load thì khi nhấn lại sẽ k có độ trễ
+
+tải thêm npm i tailwind-scrollbar và thêm import trong tailwind config và plugins (tailwindScrollbar); thêm custom beautiful-scrollbar và thêm bg-background cho body (index)
+
+messageItem có trách nhiệm hiển thị các tin nhắn trong cuộc trò truyện
+
+asChild của shadcn tìm hiẻu thêm
+
+sử dụng thư viện emoji: emoji-picker-react
+
+trong app.tsx sử dụng hàm clean up trong useEffect cho socket -> tưởng tượng hàm clean up như closure bên js
+
+nghiep vu socket io nhận message: cập nhật tin nhắn từ socket vào store để ui cập nhật ds tin nhắn; unreadCount, lastMessage, trạng thái đọc tin nhắn (seenBy) đều thay đổi 
+
+nghiệp vụ infinite scroll: sử dụng useRef để lưu một element trong react, cụ thể tạo một thẻ div ở cuối để luộn cuốn xuống dưới nhất (tin nhắn mới nhất)
+
+useLayoutEffect khác với useEffect ở chỗ: chạy trước khi browset paint ui, trong khi useEffect browser paint ui mới tới useEffect (trước đó cả hai đều: render -> dom update ->)
+
+tải npm install react-infinite-scroll-component -> infinite scroll
