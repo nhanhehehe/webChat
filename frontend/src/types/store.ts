@@ -1,6 +1,6 @@
 import type { Socket } from "socket.io-client";
 import type { Conversation, Message } from "./chat";
-import type { User } from "./user";
+import type { Friend, FriendRequest, User } from "./user";
 
 export interface authState {
   accessToken: string | null;
@@ -8,6 +8,8 @@ export interface authState {
   loading: boolean;
   
   setAccessToken: (token: string) => void;
+
+  setUser: (user: User) => void;
 
   clearState: () => void;
 
@@ -47,6 +49,7 @@ export interface ChatState {
     nextCursor?: string | null; //phân trang
   }>;
 
+  loading: boolean,
   activeConversationId: string | null;
   convoLoading: boolean; 
   messageLoading: boolean;
@@ -62,6 +65,8 @@ export interface ChatState {
   //update convo
   updateConversation: (conversation: unknown) => void;
   markAsSeen: () => Promise<void>;
+  addConvo: (conversation: Conversation) => void;
+  createConversation: (type: "group" | "direct", name: string, memberIds: string[]) => Promise<void> 
 
 }
 
@@ -71,4 +76,21 @@ export interface SocketState {
   connectSocket: () => void;
   disconnectSocket: () => void;
   
+}
+
+export interface FriendState {
+  friends: Friend[];
+  loading: boolean;
+  receivedList: FriendRequest[];
+  sentList: FriendRequest[];
+  searchByUsername: (username: string) => Promise<User | null>;
+  addFriend: (to: string, message?: string) => Promise<string>;
+  getAllFriendRequests: () => Promise<void>;
+  acceptRequest: (requestId: string) => Promise<void>;
+  declineRequest: (requestId: string) => Promise<void>;
+  getFriends: () => Promise<void>;
+}
+
+export interface UserState {
+  updateAvatarUrl: (formData: FormData) => Promise<void>;
 }

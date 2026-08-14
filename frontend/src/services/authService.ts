@@ -32,7 +32,7 @@ export const authService = {
   },
 
   fetchMe: async () => {
-    const response = await api.get("/user/me", {withCredentials: true});
+    const response = await api.get("/users/me", {withCredentials: true});
 
     return response.data.user;
   },
@@ -44,7 +44,7 @@ export const authService = {
   },
 
   testMe: async () => {
-    const response = await api.get("/user/test", {withCredentials: true});
+    const response = await api.get("/users/test", {withCredentials: true});
 
     return response.data.status;
   }

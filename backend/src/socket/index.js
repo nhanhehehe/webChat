@@ -34,6 +34,14 @@ io.on("connection", async (socket) => {
     const conversationId = await getUserConversationIdsForSocketIO(user._id);
     conversationId.forEach((c) => {socket.join(c)});
 
+    // join vào room từ khi bên frontend tạo conversation mới ()
+    socket.on("join-conversation", (conversationId) => {
+        socket.join(conversationId);
+    })
+
+    // tạo phòng theo user id
+    socket.join(user._id.toString());
+
     socket.on("disconnect", () => {
 
         onlineUsers.delete(user._id);

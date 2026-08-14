@@ -62,3 +62,7 @@ socket send message: mỗi khi user send message backend xử lý xong sẽ gử
 nghiệp vụ send message socket io: khi client kết nối được với socket rồi, cần phải đưa họ vào các room tương ứng các cuộc hội thoại mà họ tham gia ->khi đã có room rồi, lúc này send direct message/group message chỉ cần emit sự kiện vào 1 room thay vì toàn bộ clients
 
 nghiệp vụ infinite scroll: sử dụng useRef để lưu một element trong react, cụ thể tạo một thẻ div ở cuối để luộn cuốn xuống dưới nhất (tin nhắn mới nhất)
+
+nghiệp vụ bắt đầu cuộc hội thoại mới: nếu chưa có conversation sẽ call api backend để tạo mới, nếu có rồi thì join vào một room socket io để lấy conversation real time
+
+npm i cloudinary multer: uplaod ảnh

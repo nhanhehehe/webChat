@@ -79,3 +79,5 @@ nghiệp vụ infinite scroll: sử dụng useRef để lưu một element trong
 useLayoutEffect khác với useEffect ở chỗ: chạy trước khi browset paint ui, trong khi useEffect browser paint ui mới tới useEffect (trước đó cả hai đều: render -> dom update ->)
 
 tải npm install react-infinite-scroll-component -> infinite scroll
+
+FriendRequestDialog: Dispatch và SetStateAction thường xuất hiện khi bạn truyền setState xuống component con.

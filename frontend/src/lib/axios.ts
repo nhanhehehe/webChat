@@ -4,7 +4,7 @@ import axios from "axios";
 const api = axios.create({
   baseURL:
     import.meta.env.VITE_API_URL,
-  withCredentials: true,
+    withCredentials: true,
 });
 
 // gắn token vào request
@@ -19,11 +19,13 @@ api.interceptors.request.use((config) => {
 });
 
 //xử lý khi hết lỗi 403 | accesstoken expire
+// tự động gọi refresh api khi access token hết hạn
 api.interceptors.response.use(
   (res) => res,
   async (error) => {
     const originalRequest = error.config;
 
+    // những api không cần check
     if (
       originalRequest.url.includes("/auth/signin") ||
       originalRequest.url.includes("/auth/signup") ||
@@ -32,14 +34,24 @@ api.interceptors.response.use(
       return Promise.reject(error);
     }
 
-    if (error.response?.status === 403) {
-        try {
-            const res = await api.post("/user/refresh", {}, {withCredentials: true});
-            
-        } catch (error) {
-            
-        }
+    originalRequest._retryCount = originalRequest._retryCount || 0;
+
+    if (error.response?.status === 403 && originalRequest._retryCount < 4) {
+      originalRequest._retryCount += 1;
+      try {
+        const res = await api.post("/auth/refresh", {}, {withCredentials: true});
+        const newAccessToken = res.data.accessToken;
+
+        useAuthStore.getState().setAccessToken(newAccessToken);
+
+        originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
+        return api(originalRequest);
+      } catch (refreshError) {
+        useAuthStore.getState().clearState();
+        return Promise.reject(refreshError);
+      }
     }
+    return Promise.reject(error);
   },
 );
 

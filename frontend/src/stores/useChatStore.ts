@@ -5,6 +5,7 @@ import { toast } from "sonner";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { useAuthStore } from "./useAuthStore";
+import { useSocketStore } from "./useSocketStore";
 
 export const useChatStore = create<ChatState>()(
   persist(
@@ -13,12 +14,14 @@ export const useChatStore = create<ChatState>()(
       conversations: [],
       messages: {},
       activeConversationId: null,
-      convoLoading: false,
+      convoLoading: false, //convo loading
       messageLoading: false,
+      loading: false,
 
       setActiveConversation: (id) => set({ activeConversationId: id }),
       reset: () => {
         set({
+          loading: false,
           conversations: [],
           messages: {},
           activeConversationId: null,
@@ -169,13 +172,11 @@ export const useChatStore = create<ChatState>()(
 
       // cập nhật thông tin của conversation
       updateConversation: (conversation) => {
-        set((state) => {
-          return {
-            conversations: state.conversations.map((c) =>
-              c._id === conversation._id ? { ...c, ...conversation } : c,
-            ),
-          };
-        });
+        set((state) => ({
+          conversations: state.conversations.map((c) =>
+            c._id === conversation._id ? { ...c, ...conversation } : c,
+          ),
+        }));
       },
 
       markAsSeen: async () => {
@@ -215,7 +216,46 @@ export const useChatStore = create<ChatState>()(
             ),
           }));
         } catch (error) {
-          console.error("lỗi xảy ra khi mark as seen",error);
+          console.error("lỗi xảy ra khi mark as seen", error);
+        }
+      },
+
+      addConvo: (convo) => {
+        set((state) => {
+          const exists = state.conversations.some((c) => c._id === convo._id);
+
+          return {
+            conversations: exists
+              ? state.conversations
+              : [convo, ...state.conversations],
+            activeConversationId: convo._id,
+          };
+        });
+      },
+
+      createConversation: async (type, name, memberIds) => {
+        try {
+          set({ loading: true });
+
+          const conversation = await chatService.createConversation(
+            type,
+            name,
+            memberIds,
+          );
+
+          // kiểm tra có convo chưa và thêm mới
+          get().addConvo(conversation);
+
+          useSocketStore
+            .getState()
+            .socket?.emit("join-conversation", conversation._id);
+        } catch (error) {
+          console.error(
+            "lỗi xảy ra khi gọi createConversation trong store ",
+            error,
+          );
+        } finally {
+          set({ loading: false });
         }
       },
     }),

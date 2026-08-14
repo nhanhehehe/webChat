@@ -16,10 +16,22 @@ export interface Friend {
   displayName: string;
   avatarUrl?: string;
 }
-
+// to và from optional vì với received chỉ lấy từ from và sent thì lấy từ to
 export interface FriendRequest {
-  id: string;
-  username: string;
-  displayName: string;
-  avatarUrl?: string;
+  _id: string;
+  from?: {
+    _id: string;
+    username: string;
+    displayName: string;
+    avatarUrl?: string;
+  };
+  to?: {
+    _id: string;
+    username: string;
+    displayName: string;
+    avatarUrl?: string;
+  };
+  message: string;
+  createdAt: string;
+  updatedAt: string;
 }

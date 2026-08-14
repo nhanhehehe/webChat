@@ -62,8 +62,23 @@ export const createConversation = async (req, res) => {
       { path: "lastMessage.senderId", select: "displayName avatarUrl" },
     ]);
 
+    // nên tạo hàm helper cho việc format data 
+    const participants = (conversation.participants || []).map((p) => ({
+        _id: p.userId?._id,
+        displayName: p.userId?.displayName,
+        // nếu không có avatar thì null thay vì undefined
+        avatarUrl: p.userId?.avatarUrl ?? null,
+      }));
+
+    const formated = {...conversation.toObject(), participants};
+
+    // emit event cho các thành viên có trong group
+    if (type === "group") {
+      memberIds.forEach((id) => io.to(id).emit("new-group", formated));
+    }
+
     return res.status(201).json({
-      conversation,
+      conversation: formated
     });
   } catch (error) {
     console.error("lỗi khi tạo cuộc hội thoại", error);

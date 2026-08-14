@@ -74,7 +74,7 @@ export function SignupForm({
                   />
 
                   {errors.lastname && (
-                    <p className="text-xs text-destructive">
+                    <p className="error-message">
                       {errors.lastname.message}
                     </p>
                   )}
@@ -90,7 +90,7 @@ export function SignupForm({
                   />
 
                   {errors.firstname && (
-                    <p className="text-xs text-destructive">
+                    <p className="error-message">
                       {errors.firstname.message}
                     </p>
                   )}
@@ -108,7 +108,7 @@ export function SignupForm({
                 />
 
                 {errors.username && (
-                  <p className="text-xs text-destructive">
+                  <p className="error-message">
                     {errors.username.message}
                   </p>
                 )}
@@ -125,7 +125,7 @@ export function SignupForm({
                 />
 
                 {errors.email && (
-                  <p className="text-xs text-destructive">
+                  <p className="error-message">
                     {errors.email.message}
                   </p>
                 )}
@@ -142,7 +142,7 @@ export function SignupForm({
                 />
 
                 {errors.password && (
-                  <p className="text-xs text-destructive">
+                  <p className="error-message">
                     {errors.password.message}
                   </p>
                 )}
