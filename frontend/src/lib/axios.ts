@@ -2,9 +2,8 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import axios from "axios";
 
 const api = axios.create({
-  baseURL:
-    import.meta.env.VITE_API_URL,
-    withCredentials: true,
+  baseURL: import.meta.env.VITE_API_URL,
+  withCredentials: true,
 });
 
 // gắn token vào request
@@ -25,21 +24,21 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    // những api không cần check
+    // những api không cần check (bao gồm /auth/refresh để tránh vòng lặp vô hạn)
     if (
       originalRequest.url.includes("/auth/signin") ||
       originalRequest.url.includes("/auth/signup") ||
-      originalRequest.url.includes("/auth/signout")
+      originalRequest.url.includes("/auth/signout") ||
+      originalRequest.url.includes("/auth/refresh")
     ) {
       return Promise.reject(error);
     }
 
-    originalRequest._retryCount = originalRequest._retryCount || 0;
-
-    if (error.response?.status === 403 && originalRequest._retryCount < 4) {
-      originalRequest._retryCount += 1;
+    // Chỉ thử refresh một lần duy nhất cho mỗi request gốc
+    if (error.response?.status === 403 && !originalRequest._retry) {
+      originalRequest._retry = true;
       try {
-        const res = await api.post("/auth/refresh", {}, {withCredentials: true});
+        const res = await api.post("/auth/refresh", {}, { withCredentials: true });
         const newAccessToken = res.data.accessToken;
 
         useAuthStore.getState().setAccessToken(newAccessToken);
@@ -51,6 +50,7 @@ api.interceptors.response.use(
         return Promise.reject(refreshError);
       }
     }
+
     return Promise.reject(error);
   },
 );
