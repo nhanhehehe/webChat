@@ -31,7 +31,7 @@ export const useAuthStore = create<authState>()(
           set({ loading: true });
           // gọi api trong lớp service
 
-          await authService.signUp(username, password, email, firstName, lastName);
+          await authService.signUp(username, password, firstName, lastName, email);
 
           toast.success("đăng ký thành công! Bạn đã chuyển sang đăng nhập. ");
         } catch (error) {

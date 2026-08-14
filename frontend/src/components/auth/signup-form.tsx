@@ -36,7 +36,7 @@ export function SignupForm({
     const { firstname, lastname, username, email, password } = data;
 
     //gọi backend
-    await signUp(username, password, email, firstname, lastname, );
+    await signUp(username, password, firstname, lastname, email);
 
     navigate("/signin");
 
