@@ -237,7 +237,8 @@ export const markAsSeen = async (req, res) => {
     return res.status(200).json({
       message: "mark as seen",
       seenBy: updated?.seenBy || [],
-      myUnreadCount: updated?.unreadCounts[userId] ?? 0,
+      // tại sao them || 0
+      myUnreadCount: updated?.unreadCounts[userId] || 0,
     })
 
   }
