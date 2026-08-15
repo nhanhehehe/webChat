@@ -48,6 +48,8 @@ export const createConversation = async (req, res) => {
         },
         lastMessageAt: new Date(),
       });
+
+      await conversation.save();
     }
 
     if (!conversation) {
@@ -68,6 +70,7 @@ export const createConversation = async (req, res) => {
         displayName: p.userId?.displayName,
         // nếu không có avatar thì null thay vì undefined
         avatarUrl: p.userId?.avatarUrl ?? null,
+        joinedAt: p.joinedAt,
       }));
 
     const formated = {...conversation.toObject(), participants};
@@ -75,6 +78,11 @@ export const createConversation = async (req, res) => {
     // emit event cho các thành viên có trong group
     if (type === "group") {
       memberIds.forEach((id) => io.to(id).emit("new-group", formated));
+    }
+
+    if (type === "direct") {
+      io.to(userId).emit("new-group", formatted);
+      io.to(memberIds[0]).emit("new-group", formatted);
     }
 
     return res.status(201).json({
@@ -106,6 +114,10 @@ export const getConversations = async (req, res) => {
       .populate({
         path: "lastMessage.senderId",
         select: "displayName avatarUrl",
+      })
+      .populate({
+        path: "seenBy",
+        select: "displayName avatarUrl",
       });
 
     // format dữ liệu cho frontend
@@ -115,6 +127,7 @@ export const getConversations = async (req, res) => {
         displayName: p.userId?.displayName,
         // nếu không có avatar thì null thay vì undefined
         avatarUrl: p.userId?.avatarUrl ?? null,
+        joinedAt: p.joinedAt,
       }));
 
       return {
@@ -166,7 +179,7 @@ export const getMessages = async (req, res) => {
     return res.status(500).json({ message: "Lỗi hệ thống" });
   }
 };
-
+// getUserConversationsForSocketIO : github
 export const getUserConversationIdsForSocketIO = async (userId) => {
   try {
     const conversations = await Conversation.find({"participants.userId": userId}, {_id: 1});
@@ -224,7 +237,7 @@ export const markAsSeen = async (req, res) => {
       return res.status(200).json({
         message: "mark as seen",
         seenBy: updated?.seenBy || [],
-        myUnreadCounts: updated?.unreadCounts[userId] ?? 0,
+        myUnreadCount: updated?.unreadCounts[userId] ?? 0,
       })
       
     }

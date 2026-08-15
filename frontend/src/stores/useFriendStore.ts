@@ -2,7 +2,8 @@ import { friendService } from "@/services/friendService";
 import type { FriendState } from "@/types/store";
 import { create } from "zustand";
 
-export const useFriendStore = create<FriendState>((set,get) => ({
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+export const useFriendStore = create<FriendState>((set, get) => ({
   friends: [],
   loading: false,
   receivedList: [],
@@ -53,7 +54,7 @@ export const useFriendStore = create<FriendState>((set,get) => ({
     try {
       set({ loading: true });
       await friendService.acceptRequest(requestId);
-      
+
       //sau khi backend đã accept friend request thì cập nhật lại store, xóa request này    
       set((state) => ({
         receivedList: state.receivedList.filter((r) => r._id !== requestId),
@@ -80,13 +81,13 @@ export const useFriendStore = create<FriendState>((set,get) => ({
 
   getFriends: async () => {
     try {
-      set({loading: true});
+      set({ loading: true });
       const friends = await friendService.getFriendList();
-      set({friends: friends});
+      set({ friends: friends });
     } catch (error) {
       console.error("Lỗi khi get friend list", error);
     } finally {
-      set({loading: false});
+      set({ loading: false });
     }
   }
 }))

@@ -195,9 +195,7 @@ export const getAllFriends = async (req, res) => {
         .lean();
 
         if (!friendShips.length) {
-            return res.satus(200).json({
-                message: "không có bạn bè",
-            })
+            return res.status(200).json({friends: []})
         } 
 
         const friends = friendShips.map((f) => {
@@ -205,7 +203,6 @@ export const getAllFriends = async (req, res) => {
         })
 
         return res.status(200).json({
-            message: "lấy danh sách bạn bè thành công",
             friends,
         })
 

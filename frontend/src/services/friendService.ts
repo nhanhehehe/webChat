@@ -3,30 +3,30 @@ import api from "@/lib/axios";
 export const friendService = {
     async searchByUsername(username: string) {
         const res = await api.get(`/users/search?username=${username}`);
-        return res.data.user;    
+        return res.data.user;
     },
 
     async sendFriendRequest(to: string, message?: string) {
-        const res = await api.post("/friends/requests", {to,message});
+        const res = await api.post("/friends/requests", { to, message });
         return res.data.message;
     },
 
     async getAllFriendRequest() {
         try {
-        const res = await api.get("/friends/requests");
-        const { sent, received } = res.data;
-        return { sent, received };
+            const res = await api.get("/friends/requests");
+            const { sent, received } = res.data;
+            return { sent, received };
         } catch (error) {
-        console.error("Lỗi khi gửi getAllFriendRequest", error);
+            console.error("Lỗi khi gửi getAllFriendRequest", error);
         }
     },
 
     async acceptRequest(requestId: string) {
         try {
-        const res = await api.post(`/friends/requests/${requestId}/accept`);
-        return res.data.requestAcceptedBy;
+            const res = await api.post(`/friends/requests/${requestId}/accept`);
+            return res.data.requestAcceptedBy;
         } catch (error) {
-        console.error("Lỗi khi gửi acceptRequest", error);
+            console.error("Lỗi khi gửi acceptRequest", error);
         }
     },
 
@@ -40,7 +40,7 @@ export const friendService = {
 
     async getFriendList() {
         try {
-            const res= await api.get("/friends/");
+            const res = await api.get("/friends/");
             return res.data.friends;
         } catch (error) {
             console.error("lỗi khi lấy danh sách bạn bè", error);

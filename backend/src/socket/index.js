@@ -1,8 +1,8 @@
 import express from "express"
-import {Server} from "socket.io"
+import { Server } from "socket.io"
 import http from "http"
 import { socketAuthMiddleware } from "../middlewares/socketMiddleware.js";
-import {getUserConversationIdsForSocketIO} from "../controllers/conversationController.js"
+import { getUserConversationIdsForSocketIO } from "../controllers/conversationController.js"
 const app = express()
 
 const server = http.createServer(app);
@@ -31,8 +31,9 @@ io.on("connection", async (socket) => {
 
     io.emit("online-users", Array.from(onlineUsers.keys()));
 
+    // github: getUserConversationsForSocketIO.
     const conversationId = await getUserConversationIdsForSocketIO(user._id);
-    conversationId.forEach((c) => {socket.join(c)});
+    conversationId.forEach((c) => { socket.join(c) });
 
     // join vào room từ khi bên frontend tạo conversation mới ()
     socket.on("join-conversation", (conversationId) => {
@@ -45,11 +46,11 @@ io.on("connection", async (socket) => {
     socket.on("disconnect", () => {
 
         onlineUsers.delete(user._id);
-        io.emit("online-user", Array.from(onlineUsers.keys()));
+        io.emit("online-users", Array.from(onlineUsers.keys()));
         console.log("socket disconnected: ", socket.id);
 
     })
-} )
+})
 
 
-export {io, server, app}
+export { io, server, app }

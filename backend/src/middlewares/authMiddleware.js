@@ -1,4 +1,4 @@
-import jwt  from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 import User from "../models/User.js";
 
 export const protectedRoute = (req, res, next) => {
@@ -7,8 +7,8 @@ export const protectedRoute = (req, res, next) => {
         const authHeader = req.headers.authorization;
         const token = authHeader && authHeader.split(" ")[1];
 
-        if (!token ) {
-            return res.status(400).json({
+        if (!token) {
+            return res.status(401).json({
                 message: "không tìm thấy access token"
             })
         }
@@ -16,22 +16,22 @@ export const protectedRoute = (req, res, next) => {
         jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, async (err, decodedUser) => {
             if (err) {
                 console.error(err);
-                return res.status(400).json({
+                return res.status(403).json({
                     message: "access token hết hạn hoặc không chính xác"
                 })
             }
 
-            const user = await User.findById(decodedUser.userId);
+            const user = await User.findById(decodedUser.userId).select("-hashedPassword");
 
             if (!user) {
-                return res.status(400).json({
+                return res.status(404).json({
                     message: "user không tồn tại!"
                 })
             }
 
             req.user = user;
             next();
-        } )
+        })
     } catch (error) {
         console.error("lỗi khi xác minh jwt trong authMiddleware", error);
         return res.status(500).json({
