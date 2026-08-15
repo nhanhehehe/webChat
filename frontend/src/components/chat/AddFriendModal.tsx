@@ -83,12 +83,13 @@ const AddFriendModal = () => {
 
   return (
     <Dialog>
-      <DialogTrigger>
-        {/* z=10: hiển thị nổi lên modal */}
-        <div  className="flex justify-center items-center size-5 rounded-full hover:bg-sidebar-accent cursor-pointer z-10">
-          <UserPlus className="size-4"/>
-          <span className="sr-only">Kết bạn</span>
-        </div>
+      <DialogTrigger
+        render={
+          <div className="flex justify-center items-center size-5 rounded-full hover:bg-sidebar-accent cursor-pointer z-10" />
+        }
+      >
+        <UserPlus className="size-4" />
+        <span className="sr-only">Kết bạn</span>
       </DialogTrigger>
         
       <DialogContent>

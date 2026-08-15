@@ -65,18 +65,19 @@ const NewGroupChatModal = () => {
       friend.displayName.toLowerCase().includes(search.toLowerCase()) &&
       !invitedUsers.some((u) => u._id === friend._id)
   );
-
   return (
     <Dialog>
-      <DialogTrigger aschild="true">
-        <Button
-          variant="ghost"
-          onClick={handleGetFriends}
-          className="flex z-10 justify-center items-center size-5 rounded-full hover:bg-sidebar-accent transition cursor-pointer"
-        >
-          <Users className="size-4" />
-          <span className="sr-only">Tạo nhóm</span>
-        </Button>
+      <DialogTrigger
+        render={
+          <Button
+            variant="ghost"
+            onClick={handleGetFriends}
+            className="flex z-10 justify-center items-center size-5 rounded-full hover:bg-sidebar-accent transition cursor-pointer"
+          />
+        }
+      >
+        <Users className="size-4" />
+        <span className="sr-only">Tạo nhóm</span>
       </DialogTrigger>
 
       <DialogContent className="sm:max-w-[425px] border-none">
