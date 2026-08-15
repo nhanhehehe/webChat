@@ -16,7 +16,9 @@ import { useEffect } from "react";
                                                       // + footer
 const ChatWindowLayout = () => {
   const {activeConversationId, conversations, messageLoading: loading, markAsSeen } = useChatStore();
-  const selectedConvo = conversations.find((c) => (c._id === activeConversationId));
+  
+  // nếu kh có trả về null ?? tại sao lại làm như này cần tìm hiểu thêm
+  const selectedConvo = conversations.find((c) => (c._id === activeConversationId)) ?? null;
 
   //khi user mở một cuộc hội thoại, nếu có tin nhắn chưa đọc thì mark as seen
   useEffect(() => {
