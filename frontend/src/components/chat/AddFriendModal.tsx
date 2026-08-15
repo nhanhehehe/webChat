@@ -84,6 +84,7 @@ const AddFriendModal = () => {
   return (
     <Dialog>
       <DialogTrigger
+        nativeButton={false}
         render={
           <div className="flex justify-center items-center size-5 rounded-full hover:bg-sidebar-accent cursor-pointer z-10" />
         }
